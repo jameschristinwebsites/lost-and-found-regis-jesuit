@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Regis Jesuit Lost & Found</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#A9292E;--dark-red:#861B21;--light-red:#F8EDEE;--white:#FFFFFF;--off:#F8F6F2;--soft:#FBF7F6;
+  --gray:#6B7280;--black:#111827;--line:#E5E7EB;--green:#15803D;--amber:#B45309;--blue:#075985;
+  --shadow:0 10px 30px rgba(17,24,39,.08);--shadow-lg:0 24px 70px rgba(17,24,39,.16);
+  --btn-shadow:4px 4px 0 rgba(17,24,39,.18);--btn-red-shadow:4px 4px 0 rgba(169,41,46,.18);
+}
+html{scroll-behavior:smooth}
+body{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--black);background:#fff;overflow-x:hidden}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.hidden{display:none!important}
+.serif{font-family:"Times New Roman",Times,serif;font-weight:700}
+.data{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,monospace}
+.sr-only{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:999;min-height:80px;background:rgba(255,255,255,.97);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:.65rem 2.5rem;
+}
+.logo{display:flex;align-items:center;gap:1rem;cursor:pointer;min-width:0}
+.rj-logo{width:78px;height:auto;display:block;object-fit:contain}
+.logo-title{font-family:"Times New Roman",Times,serif;font-weight:700;color:var(--black);font-size:2rem;letter-spacing:-.055em;line-height:.9}
+.logo-sub{font-size:.72rem;text-transform:uppercase;letter-spacing:.28em;color:var(--red);font-weight:900;margin-top:.35rem;white-space:nowrap}
+.nav-links{display:flex;align-items:center;gap:.45rem;flex-wrap:wrap;justify-content:flex-end}
+.nav-link,.nav-btn,.btn-primary,.btn-secondary,.btn-mini,.tab,.menu-toggle{
+  border-radius:0!important;font-weight:900;transition:.18s ease;
+}
+.nav-link{border:0;background:transparent;color:#374151;padding:.58rem .72rem;font-size:.82rem;text-transform:uppercase;letter-spacing:.03em}
+.nav-link:hover,.nav-link:focus{background:var(--light-red);color:var(--red);outline:none}
+.nav-btn,.menu-toggle{background:var(--red);color:white;border:2px solid var(--red);padding:.65rem 1rem;box-shadow:var(--btn-shadow);font-family:"Times New Roman",Times,serif;font-size:1rem;line-height:1}
+.nav-btn.profile-btn{background:white;color:var(--red);box-shadow:var(--btn-red-shadow)}
+.nav-btn:hover,.menu-toggle:hover,.nav-btn:focus,.menu-toggle:focus{transform:translate(-1px,-1px);background:var(--dark-red);color:white;outline:none}
+.nav-btn.profile-btn:hover,.nav-btn.profile-btn:focus{background:var(--light-red);color:var(--red)}
+.menu-toggle{display:none}
+.page{display:none;padding-top:80px}
+.page.active{display:block}
+.hero{
+  min-height:92vh;background:white;position:relative;overflow:hidden;display:grid;grid-template-columns:1fr .92fr;gap:3.5rem;align-items:center;
+  padding:7.2rem 6% 4.5rem;
+}
+.hero:before{content:"";position:absolute;inset:auto -15% -35% -15%;height:48%;background:radial-gradient(circle,rgba(169,41,46,.12),transparent 65%);z-index:0}
+.hero-main,.hero-visual{position:relative;z-index:2}
+.badge{display:inline-flex;background:var(--light-red);color:var(--red);padding:.55rem 1rem;border:1px solid rgba(169,41,46,.18);font-size:.78rem;font-weight:900;text-transform:uppercase;letter-spacing:.12em;margin-bottom:1.3rem}
+.hero h1{font-family:"Times New Roman",Times,serif;font-weight:700;font-size:clamp(3.4rem,6.2vw,5.9rem);line-height:.92;letter-spacing:-.06em;color:var(--black);margin-bottom:1.15rem}
+.hero h1 span{color:var(--red)}
+.hero p{font-size:1.08rem;line-height:1.75;color:#4B5563;max-width:680px;margin-bottom:1.5rem}
+.hero-search{display:flex;gap:.75rem;max-width:620px;background:white;border:1px solid var(--line);padding:.55rem;border-radius:0;box-shadow:var(--shadow);margin-bottom:1.2rem}
+.hero-search input{flex:1;border:0;outline:0;padding:.85rem 1rem;font-weight:700}
+.actions{display:flex;gap:.8rem;flex-wrap:wrap}
+.btn-primary,.hero-search button{background:var(--red);color:white;border:2px solid var(--red);padding:.85rem 1.15rem;box-shadow:var(--btn-shadow);text-transform:uppercase;letter-spacing:.04em}
+.btn-primary:hover,.hero-search button:hover,.btn-primary:focus,.hero-search button:focus{background:var(--dark-red);transform:translate(-1px,-1px);outline:none}
+.btn-secondary{background:white;color:var(--red);border:2px solid var(--red);padding:.85rem 1.15rem;box-shadow:var(--btn-red-shadow);text-transform:uppercase;letter-spacing:.04em}
+.btn-secondary:hover,.btn-secondary:focus{background:var(--light-red);transform:translate(-1px,-1px);outline:none}
+.hero-visual{background:linear-gradient(180deg,#fff,var(--light-red));border:1px solid var(--line);border-radius:8px;padding:1.25rem;box-shadow:var(--shadow-lg)}
+.visual-top{height:180px;border-radius:8px;background:var(--red);color:white;padding:1.4rem;display:flex;flex-direction:column;justify-content:flex-end;position:relative;overflow:hidden}
+.visual-top:before{content:"";position:absolute;inset:-30%;background:linear-gradient(120deg,rgba(255,255,255,.16),transparent 35%,rgba(255,255,255,.10));animation:sheen 4.5s ease-in-out infinite}
+.visual-top h3{position:relative;z-index:1;font-family:"Times New Roman",Times,serif;font-size:2.35rem;line-height:.95;letter-spacing:-.04em}
+.visual-top p{position:relative;z-index:1;font-size:.85rem;line-height:1.4;color:rgba(255,255,255,.86);margin:.6rem 0 0;max-width:390px}
+.visual-item{margin-top:.85rem;background:white;border:1px solid var(--line);border-radius:8px;padding:.9rem;display:grid;grid-template-columns:64px 1fr auto;gap:.85rem;align-items:center}
+.visual-item strong{display:block;color:var(--black)}
+.visual-item span{font-size:.8rem;color:var(--gray);font-weight:700}
+.pill,.result-pill{font-size:.7rem;font-weight:900;color:var(--red);background:var(--light-red);padding:.35rem .55rem;border-radius:0;border:1px solid rgba(169,41,46,.18)}
+.icon-tile{width:64px;height:58px;border:1.5px solid rgba(169,41,46,.22);background:linear-gradient(135deg,#fff,var(--light-red));display:grid;place-items:center;position:relative;overflow:hidden}
+.icon-tile svg{width:36px;height:36px;stroke:var(--red);stroke-width:2.15;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:.25s}
+.icon-tile:after{content:"";position:absolute;inset:auto 12px 12px 12px;height:2px;background:var(--red);opacity:.35;animation:scan 2.4s ease-in-out infinite}
+.item-card:hover .icon-tile svg,.visual-item:hover .icon-tile svg,.featured-card:hover .icon-tile svg,.portal-card:hover .portal-graphic svg{transform:scale(1.08)}
+.icon-tile.electronics:after,.icon-tile.keys:after{width:10px;height:10px;border-radius:50%;left:auto;right:12px;top:12px;bottom:auto;animation:dotBlink 1.5s infinite}
+.icon-tile.water-bottles:after{height:18px;width:18px;border:2px solid var(--red);background:transparent;border-radius:50%;left:22px;bottom:18px;animation:pulseRing 2.2s ease-in-out infinite}
+.icon-tile.sports-equipment:after{height:2px;left:14px;right:14px;bottom:16px;animation:slideBar 2s ease-in-out infinite}
+@keyframes sheen{0%,100%{transform:translateX(-20%)}50%{transform:translateX(18%)}}
+@keyframes scan{0%,100%{transform:translateY(-22px);opacity:.20}50%{transform:translateY(0);opacity:.65}}
+@keyframes dotBlink{0%,100%{opacity:.2;transform:scale(.8)}50%{opacity:1;transform:scale(1.15)}}
+@keyframes pulseRing{0%,100%{transform:scale(.75);opacity:.22}50%{transform:scale(2);opacity:.06}}
+@keyframes slideBar{0%,100%{transform:translateX(-12px);opacity:.25}50%{transform:translateX(12px);opacity:.75}}
+@keyframes iconFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
+@keyframes iconDraw{0%,100%{stroke-dashoffset:0}50%{stroke-dashoffset:8}}
+
+/* Animated icon system: subtle motion without needing hover */
+.icon-tile svg,.portal-graphic svg{animation:iconFloat 2.8s ease-in-out infinite;}
+.icon-tile svg *,.portal-graphic svg *{stroke-dasharray:80;animation:iconDraw 3.8s ease-in-out infinite;}
+.portal-graphic:after{animation:scan 2.3s ease-in-out infinite;}
+
+.section{padding:5.5rem 6%}
+.section-inner{max-width:1180px;margin:auto}
+.eyebrow{color:var(--red);font-size:.78rem;font-weight:900;letter-spacing:.16em;text-transform:uppercase;margin-bottom:.75rem}
+.section-title{font-family:"Times New Roman",Times,serif;font-size:clamp(2.5rem,5vw,4.5rem);line-height:.95;letter-spacing:-.055em;margin-bottom:1rem;color:var(--black)}
+.section-sub{color:var(--gray);font-size:1.05rem;line-height:1.75;max-width:760px;margin-bottom:2.2rem}
+.stats{background:var(--off);padding:3rem 6%}
+
+.stats{background:linear-gradient(180deg,#fff,var(--off));padding:3rem 6% 3.4rem;border-top:1px solid var(--line);}
+.stat{position:relative;overflow:hidden;}
+.stat:after{content:"";position:absolute;inset:auto 0 0 0;height:4px;background:var(--red);opacity:.14;}
+.step{position:relative;overflow:hidden;}
+.step:before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--red);opacity:.75;}
+.stats-grid{max-width:1180px;margin:auto;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.stat{background:white;border:1px solid var(--line);border-radius:8px;padding:2rem;box-shadow:var(--shadow);text-align:center;border-top:5px solid var(--red)}
+.stat h3{font-family:"Times New Roman",Times,serif;font-size:3.2rem;color:var(--red);line-height:1}
+.stat p{color:var(--gray);font-weight:900;text-transform:uppercase;font-size:.78rem;margin-top:.6rem;letter-spacing:.08em}
+.steps,.portal-grid,.quote-grid,.doc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.step,.portal-card,.quote,.doc-card{background:white;border:1px solid var(--line);border-radius:8px;padding:1.55rem;box-shadow:var(--shadow);transition:.2s}
+.step:hover,.portal-card:hover,.quote:hover,.doc-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.step-num{font-family:"Times New Roman",Times,serif;font-size:2.2rem;color:var(--red);margin-bottom:.8rem}
+.step h3,.portal-card h3,.doc-card h3{color:var(--black);font-size:1.15rem;margin-bottom:.55rem}
+.step p,.portal-card p,.quote p,.doc-card p,.doc-card li{color:var(--gray);line-height:1.6;font-size:.92rem}
+.doc-card ul{padding-left:1.1rem;display:grid;gap:.35rem}
+.portal-card{text-align:left;min-height:210px;border:0;cursor:pointer}
+.portal-graphic{width:74px;height:74px;margin-bottom:1.1rem;border:1.5px solid rgba(169,41,46,.22);background:linear-gradient(135deg,#fff,var(--light-red));display:grid;place-items:center;position:relative;overflow:hidden}
+.portal-graphic svg{width:44px;height:44px;stroke:var(--red);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round;transition:.25s}
+.portal-graphic:after{content:"";position:absolute;width:34px;height:2px;background:var(--red);bottom:17px;left:20px;animation:scan 2.3s ease-in-out infinite;opacity:.45}
+.quote-grid{grid-template-columns:repeat(3,1fr)}
+.quote strong{color:var(--red);display:block;margin-top:1rem}
+.featured{background:var(--red);color:white}
+.featured .section-title,.featured .eyebrow{color:white}
+.featured .section-sub{color:rgba(255,255,255,.75)}
+.featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.featured-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:8px;padding:1.2rem;display:grid;grid-template-columns:70px 1fr;gap:1rem;align-items:center;transition:.2s}
+.featured-card:hover{transform:translateY(-4px);background:rgba(255,255,255,.18)}
+.featured-card .icon-tile{background:rgba(255,255,255,.16);border-color:rgba(255,255,255,.32)}
+.featured-card .icon-tile svg{stroke:white}
+.featured-card .icon-tile:after{background:white}
+.featured-card h3{margin-bottom:.35rem;color:white}
+.featured-card p{color:rgba(255,255,255,.82);line-height:1.5;font-size:.9rem}
+
+.internal{min-height:100vh;background:var(--off);padding:112px 6% 4rem}
+.internal-inner{max-width:1180px;margin:auto}
+.page-header{background:white;border:1px solid var(--line);border-radius:8px;padding:2.2rem;box-shadow:var(--shadow);margin-bottom:1.4rem;border-left:8px solid var(--red)}
+.page-header h1{font-family:"Times New Roman",Times,serif;font-size:clamp(2.65rem,6vw,5rem);letter-spacing:-.06em;line-height:.9;margin-bottom:.8rem;color:var(--black)}
+.page-header p{color:var(--gray);line-height:1.7;max-width:820px}
+.filters{background:white;border:1px solid var(--line);border-radius:8px;padding:1rem;box-shadow:var(--shadow);display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:.8rem;margin-bottom:1rem}
+input,select,textarea{border:1.5px solid #D1D5DB;border-radius:0;padding:.85rem .95rem;outline:0;background:white;font-weight:700;color:var(--black);width:100%}
+textarea{min-height:120px;resize:vertical}
+input:focus,select:focus,textarea:focus{border-color:var(--red);box-shadow:0 0 0 4px rgba(169,41,46,.10)}
+label{display:grid;gap:.45rem;color:var(--black);font-weight:900;font-size:.88rem}
+.help-text{color:var(--gray);font-size:.82rem;font-weight:700;line-height:1.45}
+.form-card,.panel{background:white;border:1px solid var(--line);border-radius:8px;padding:1.5rem;box-shadow:var(--shadow)}
+.form{display:grid;gap:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.message{font-weight:900;color:var(--green);margin-top:.4rem}
+.message.error{color:var(--red)}
+.message.soft{background:white;padding:1rem;border:1px dashed var(--line);border-left:5px solid var(--red);color:var(--gray)}
+.preview-wrap{display:flex;align-items:center;gap:1rem;flex-wrap:wrap;padding:.8rem;background:var(--soft);border:1px dashed var(--line)}
+.preview-wrap img{width:140px;height:100px;object-fit:cover;border:1px solid var(--line);background:white}
+.results-bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:0 0 1rem;flex-wrap:wrap}
+.items-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.item-card{background:white;border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);transition:.2s}
+.item-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.item-top{min-height:145px;background:linear-gradient(135deg,var(--light-red),#fff);position:relative;display:grid;place-items:center;padding:1rem}
+.item-top .icon-tile{width:86px;height:78px}
+.item-top .icon-tile svg{width:48px;height:48px}
+.item-location{position:absolute;top:12px;left:12px;background:white;color:var(--red);padding:.35rem .6rem;border-radius:0;font-size:.72rem;font-weight:900;max-width:82%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border:1px solid rgba(169,41,46,.14)}
+.item-body{padding:1rem}
+.status{display:inline-flex;padding:.3rem .6rem;border-radius:0;font-size:.72rem;font-weight:900;margin-bottom:.65rem;border:1px solid transparent}
+.status.available,.status.approved{background:#DCFCE7;color:#166534;border-color:#BBF7D0}
+.status.pending,.status.review,.status.claimed{background:#FEF3C7;color:#92400E;border-color:#FDE68A}
+.status.ready{background:#E0F2FE;color:#075985;border-color:#BAE6FD}
+.status.returned{background:#E0E7FF;color:#3730A3;border-color:#C7D2FE}
+.status.denied,.status.rejected{background:#FEE2E2;color:#991B1B;border-color:#FECACA}
+.item-card h3{font-size:1.1rem;margin-bottom:.35rem;color:var(--black)}
+.meta{font-size:.82rem;color:var(--gray);font-weight:700;line-height:1.5}
+.meta b{color:var(--black)}
+.item-card p{font-size:.9rem;line-height:1.5;color:#374151;margin:.7rem 0}
+.card-actions{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.8rem}
+.btn-mini{border:2px solid var(--red);background:var(--red);color:white;padding:.58rem .76rem;font-size:.8rem;box-shadow:3px 3px 0 rgba(17,24,39,.14);text-transform:uppercase;letter-spacing:.03em}
+.btn-mini:hover,.btn-mini:focus{background:var(--dark-red);transform:translate(-1px,-1px);outline:none}
+.btn-mini.light{background:#F3F4F6;color:var(--black);border-color:#D1D5DB;box-shadow:3px 3px 0 rgba(17,24,39,.08)}
+.btn-mini.white{background:white;color:var(--red);border-color:var(--red);box-shadow:3px 3px 0 rgba(169,41,46,.12)}
+.btn-mini.danger{background:#991B1B;border-color:#991B1B}
+.btn-mini.good{background:#15803D;border-color:#15803D}
+.two-col{display:grid;grid-template-columns:.86fr 1.14fr;gap:1.2rem;align-items:start}
+.panel h2{font-family:"Times New Roman",Times,serif;font-size:2rem;letter-spacing:-.035em;margin-bottom:.8rem;color:var(--black)}
+.claim-row,.staff-row,.faq-row,.code-row{border:1px solid var(--line);border-radius:8px;padding:1rem;margin-bottom:.8rem;background:white}
+.row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.row-icon{width:72px;height:64px;flex:0 0 auto}
+.staff-layout{display:grid;grid-template-columns:280px 1fr;gap:1rem;align-items:start}
+.staff-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:.9rem;margin-bottom:1rem}
+.staff-stat{background:white;border:1px solid var(--line);border-radius:8px;padding:1.1rem;box-shadow:var(--shadow)}
+.staff-stat h3{font-family:"Times New Roman",Times,serif;font-size:2.2rem;color:var(--red);line-height:1}
+.staff-stat p{font-size:.72rem;color:var(--gray);font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-top:.35rem}
+.tabs{display:grid;gap:.55rem}
+.tab{background:white;border:1.5px solid #D1D5DB;padding:.72rem .8rem;font-size:.82rem;color:var(--black);text-align:left;text-transform:uppercase;letter-spacing:.04em}
+.tab.active{background:var(--red);color:white;border-color:var(--red);box-shadow:var(--btn-shadow)}
+.schedule{display:grid;grid-template-columns:100px repeat(5,1fr);gap:7px;overflow:auto}
+.day,.period,.slot{min-height:44px;border-radius:0;display:grid;place-items:center;text-align:center;font-size:.74rem;font-weight:900;padding:.4rem}
+.day,.period{background:#F3F4F6;color:var(--black)}
+.slot{background:#F9FAFB;color:#9CA3AF}
+.slot.open{background:var(--light-red);color:var(--red);border:1px solid rgba(169,41,46,.22)}
+.slot.open:after{content:"PICKUP"}
+.contact-email{display:inline-flex;align-items:center;gap:.55rem;margin-top:.75rem;color:var(--red);font-weight:900;text-decoration:none;background:var(--light-red);padding:.8rem 1rem;border-radius:0;border:1px solid rgba(169,41,46,.18)}
+.device-showcase{background:white;border:1px solid var(--line);border-radius:8px;padding:1.2rem;box-shadow:var(--shadow);margin-top:1rem}
+.devices{display:grid;grid-template-columns:1.25fr .8fr .45fr;gap:1rem;align-items:end}
+.device{background:#111827;border-radius:16px;padding:12px;box-shadow:var(--shadow-lg)}
+.device.desktop{border-radius:10px}
+.device.tablet{min-height:350px}
+.device.phone{min-height:330px;border-radius:28px;padding:10px}
+.screen{background:#fff;border-radius:6px;overflow:hidden;min-height:250px}
+.phone .screen{border-radius:18px;min-height:305px}
+.mini-nav{height:34px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 .7rem;font-size:.55rem;font-weight:900;color:var(--red)}
+.mini-hero{padding:1rem;display:grid;grid-template-columns:1fr .8fr;gap:.8rem}
+.tablet .mini-hero,.phone .mini-hero{grid-template-columns:1fr}
+.mini-title{font-family:"Times New Roman",Times,serif;font-size:1.45rem;line-height:.9;letter-spacing:-.06em}
+.tablet .mini-title{font-size:1.25rem}.phone .mini-title{font-size:1.05rem}
+.mini-title span{color:var(--red)}
+.mini-text{margin-top:.45rem;height:22px;background:#F3F4F6;width:86%}
+.mini-card{background:var(--light-red);padding:.7rem;border:1px solid rgba(169,41,46,.14);min-height:90px}
+.mini-card-line{height:12px;background:white;margin:.4rem 0;width:100%}
+.mini-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;padding:0 1rem 1rem}
+.tablet .mini-grid{grid-template-columns:repeat(2,1fr)}.phone .mini-grid{grid-template-columns:1fr}
+.mini-item{height:54px;background:#F9FAFB;border:1px solid var(--line)}
+.device.preview-trigger{border:0;cursor:pointer;text-align:left;transition:transform .2s ease,box-shadow .2s ease;position:relative}
+.device.preview-trigger:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+.device-label{margin-top:.7rem;color:#F9FAFB;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;text-align:center}
+.device-hint{display:block;color:rgba(255,255,255,.72);font-size:.62rem;font-weight:700;letter-spacing:.02em;margin-top:.22rem;text-transform:none}
+.device-shot{display:block;width:100%;height:100%;object-fit:cover;object-position:top center;background:white}
+.desktop .device-shot{aspect-ratio:16/10}
+.tablet .device-shot{aspect-ratio:4/5}
+.phone .device-shot{aspect-ratio:9/19.5}
+.preview-modal{position:fixed;inset:0;background:rgba(17,24,39,.72);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:1.2rem;z-index:5000}
+.preview-modal.open{display:flex}
+.preview-dialog{width:min(1120px,96vw);background:white;border:1px solid var(--line);box-shadow:var(--shadow-lg);padding:1rem}
+.preview-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.preview-top h3{font-family:"Times New Roman",Times,serif;font-size:2rem;letter-spacing:-.04em;color:var(--black)}
+.preview-close{background:white;color:var(--red);border:2px solid var(--red);padding:.72rem 1rem;font-weight:900;text-transform:uppercase;letter-spacing:.04em;box-shadow:var(--btn-shadow)}
+.preview-stage{background:var(--off);border:1px solid var(--line);padding:1rem;display:grid;place-items:center;min-height:300px}
+.preview-frame{background:#111827;padding:12px;box-shadow:var(--shadow-lg)}
+.preview-frame.desktop{width:min(100%,960px);border-radius:10px}
+.preview-frame.tablet{width:min(100%,720px);border-radius:16px}
+.preview-frame.phone{width:min(100%,390px);border-radius:28px;padding:10px}
+.preview-frame .screen{min-height:auto}
+.preview-frame .device-shot{width:100%;display:block}
+.preview-caption{margin-top:.75rem;color:var(--gray);font-size:.88rem;line-height:1.55}
+pre{white-space:pre-wrap;word-break:break-word;background:#111827;color:#F9FAFB;padding:1rem;border-radius:0;overflow:auto;font-size:.78rem;line-height:1.55}
+.palette{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.7rem}
+.swatch{width:44px;height:44px;border:1px solid var(--line);box-shadow:2px 2px 0 rgba(17,24,39,.10)}
+footer{background:var(--black);color:rgba(255,255,255,.75);padding:2rem 6%}
+.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;font-weight:700}
+
+@media(max-width:1120px){
+  nav{padding:.6rem 1rem}
+  .nav-links{position:absolute;top:80px;left:0;right:0;background:white;border-bottom:1px solid var(--line);padding:1rem;display:none;grid-template-columns:1fr;box-shadow:var(--shadow)}
+  .nav-links.open{display:grid}
+  .nav-link,.nav-btn{width:100%;text-align:left;margin:0}
+  .menu-toggle{display:block}
+  .rj-logo{width:64px}
+  .logo-title{font-size:1.65rem}
+}
+@media(max-width:980px){
+  .hero{grid-template-columns:1fr;padding-top:7rem}
+  .stats-grid,.steps,.portal-grid,.staff-stats,.doc-grid{grid-template-columns:repeat(2,1fr)}
+  .featured-grid,.items-grid,.quote-grid{grid-template-columns:repeat(2,1fr)}
+  .filters{grid-template-columns:1fr}
+  .two-col,.staff-layout{grid-template-columns:1fr}
+  .devices{grid-template-columns:1fr}
+}
+@media(max-width:640px){
+  nav{padding:.55rem .75rem}
+  .rj-logo{width:54px}
+  .logo-title{font-size:1.35rem}
+  .logo-sub{font-size:.58rem;letter-spacing:.17em}
+  .hero-search,.actions{flex-direction:column}
+  .stats-grid,.steps,.portal-grid,.featured-grid,.items-grid,.quote-grid,.form-row,.staff-stats,.doc-grid{grid-template-columns:1fr}
+  .featured-card{grid-template-columns:64px 1fr}
+  .hero h1{font-size:clamp(3rem,16vw,4.2rem)}
+}
+
+/* v5: Responsive preview devices reflow the layout instead of cropping one screenshot */
+.device .screen{background:#fff;overflow:hidden}
+.responsive-home{height:100%;background:white;color:var(--black);font-family:Inter,system-ui,sans-serif;overflow:hidden}
+.rh-nav{height:34px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 .75rem;font-size:.62rem;font-weight:900;color:var(--black);white-space:nowrap}
+.rh-nav small{font-size:.42rem;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.rh-hero{display:grid;grid-template-columns:1fr .95fr;gap:1rem;padding:1rem}
+.rh-copy{padding:.4rem}
+.rh-badge{display:inline-block;border:1px solid rgba(169,41,46,.25);background:var(--light-red);color:var(--red);padding:.35rem .55rem;font-size:.42rem;font-weight:900;letter-spacing:.11em;margin-bottom:.55rem}
+.rh-title{font-family:"Times New Roman",Times,serif;font-size:2.3rem;line-height:.9;letter-spacing:-.065em;color:var(--black);margin-bottom:.45rem}
+.rh-title span{color:var(--red)}
+.rh-copy p{font-size:.62rem;line-height:1.55;color:var(--gray);margin-bottom:.65rem}
+.rh-search{height:35px;border:1px solid var(--line);box-shadow:3px 3px 0 rgba(17,24,39,.08);display:flex;align-items:center;justify-content:space-between;font-size:.48rem;color:var(--gray);font-weight:800;padding-left:.6rem;margin-bottom:.55rem}
+.rh-search b{height:100%;display:grid;place-items:center;background:var(--red);color:white;padding:0 .75rem;font-size:.48rem;letter-spacing:.04em}
+.rh-buttons{display:flex;gap:.45rem;flex-wrap:wrap}
+.rh-buttons em{font-style:normal;background:var(--red);color:white;border:1px solid var(--red);box-shadow:3px 3px 0 rgba(169,41,46,.18);font-size:.42rem;font-weight:900;letter-spacing:.04em;padding:.45rem .55rem}
+.rh-buttons em+em{background:white;color:var(--red)}
+.rh-card{border:1px solid var(--line);background:linear-gradient(180deg,#fff,var(--light-red));box-shadow:0 10px 22px rgba(17,24,39,.10);padding:.55rem}
+.rh-red{background:var(--red);color:white;font-family:"Times New Roman",Times,serif;font-weight:700;font-size:1.1rem;line-height:.95;padding:.85rem;margin-bottom:.5rem}
+.rh-red small{display:block;font-family:Inter,system-ui,sans-serif;font-size:.38rem;font-weight:600;line-height:1.2;margin-top:.35rem;opacity:.9}
+.rh-row{display:grid;grid-template-columns:30px 1fr auto;gap:.45rem;align-items:center;background:white;border:1px solid var(--line);padding:.42rem;margin-top:.42rem}
+.rh-row i{width:30px;height:30px;border:1px solid rgba(169,41,46,.22);background:var(--light-red);display:block;position:relative}
+.rh-row i:after{content:"";position:absolute;inset:8px;border:2px solid var(--red);border-radius:50%;opacity:.75;animation:dotPulse 1.8s infinite}
+.rh-row strong{font-size:.52rem;line-height:1.12;color:var(--black)}
+.rh-row small{font-size:.42rem;color:var(--gray)}
+.rh-row span{font-size:.38rem;color:var(--red);font-weight:900;background:var(--light-red);border:1px solid rgba(169,41,46,.18);padding:.22rem .32rem;white-space:nowrap}
+.tablet-view{padding:.8rem}
+.tablet-view .rh-nav{height:36px;margin:-.8rem -.8rem .75rem}
+.tablet-view .rh-copy{padding:0}
+.tablet-view .rh-title{font-size:2.05rem}
+.tablet-view .rh-copy p{font-size:.72rem}
+.tablet-view .rh-card{margin-top:.8rem}
+.tablet-view .rh-red{font-size:1.25rem;padding:1rem}
+.tablet-view .rh-row{grid-template-columns:42px 1fr auto;padding:.58rem}
+.tablet-view .rh-row i{width:42px;height:42px}
+.tablet-view .rh-row strong{font-size:.68rem}
+.tablet-view .rh-row small{font-size:.52rem}
+.phone-view{padding:.7rem}
+.phone-view .rh-nav{height:32px;margin:-.7rem -.7rem .65rem}
+.phone-view .rh-copy{padding:0}
+.phone-view .rh-title{font-size:1.55rem;margin-bottom:.35rem}
+.phone-view .rh-copy p{font-size:.55rem;line-height:1.35;margin-bottom:.5rem}
+.phone-view .rh-search{height:28px;font-size:.42rem;margin-bottom:.55rem}
+.phone-view .rh-search b{font-size:.4rem;padding:0 .45rem}
+.phone-view .rh-card{margin-top:.55rem;padding:.38rem}
+.phone-view .rh-red{font-size:.9rem;padding:.65rem;margin-bottom:.35rem}
+.phone-view .rh-red small{font-size:.3rem}
+.phone-view .rh-row{grid-template-columns:30px 1fr;padding:.42rem;margin-top:.35rem}
+.phone-view .rh-row i{width:30px;height:30px}
+.phone-view .rh-row strong{font-size:.5rem}
+.phone-view .rh-row small{font-size:.39rem}
+.phone-view .rh-row span{display:none}
+.preview-frame.desktop{width:min(100%,960px)}
+.preview-frame.tablet{width:min(100%,620px)}
+.preview-frame.phone{width:min(100%,360px)}
+.preview-frame.desktop .screen{height:540px}
+.preview-frame.tablet .screen{height:720px}
+.preview-frame.phone .screen{height:740px}
+.preview-frame.desktop .responsive-home{transform:scale(1.25);transform-origin:top left;width:80%;height:80%}
+.preview-frame.tablet .responsive-home{font-size:1.18rem}
+.preview-frame.phone .responsive-home{font-size:1.15rem}
+@media(max-width:980px){
+  .devices{grid-template-columns:1fr}
+}
+
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo" onclick="showPage('home')" aria-label="Regis Jesuit Lost and Found home">
+    <img class="rj-logo" src="data:image/png;base64,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" alt="Regis Jesuit RJ logo">
+    <div>
+      <div class="logo-title">Lost & Found</div>
+      <div class="logo-sub">Report • Verify • Recover</div>
+    </div>
+  </div>
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Open navigation">Menu</button>
+  <div class="nav-links" id="navLinks">
+    <button class="nav-link" onclick="scrollHome('how')">How it Works</button>
+    <button class="nav-link" onclick="showPage('report')">Report Item</button>
+    <button class="nav-link" onclick="scrollHome('featured')">Recent Items</button>
+    <button class="nav-link" onclick="showPage('browse')">Browse</button>
+    <button class="nav-link" onclick="showPage('help')">Help & Documentation</button>
+    <button class="nav-btn profile-btn" onclick="showPage('profile')">My Profile</button>
+    <button class="nav-btn" onclick="showPage('staff')">Staff</button>
+  </div>
+</nav>
+
+<main>
+<section id="home" class="page active">
+  <div class="hero">
+    <div class="hero-main">
+      <div class="badge">Regis Jesuit Recovery System</div>
+      <h1>Regis Jesuit<br><span>Lost & Found</span></h1>
+      <p>A campus-wide tool for reporting found items, searching approved listings, submitting claims, and letting staff verify returns through one clear workflow.</p>
+      <div class="hero-search">
+        <input id="heroSearch" placeholder="Search AirPods, hoodie, Hydro Flask, RJ-2500..." onkeydown="heroSearchKey(event)">
+        <button onclick="heroSearch()">Search</button>
+      </div>
+      <div class="actions">
+        <button class="btn-primary" onclick="showPage('report')">Report a Found Item</button>
+        <button class="btn-secondary" onclick="showPage('browse')">Browse Found Items</button>
+        <button class="btn-secondary" onclick="showPage('claim')">Submit a Claim</button>
+      </div>
+    </div>
+    <div class="hero-visual" aria-label="Lost and found system preview">
+      <div class="visual-top">
+        <h3>Regis Jesuit<br>Lost & Found</h3>
+        <p>Report → Staff Approval → Browse → Claim → Returned</p>
+      </div>
+      <div id="heroPreviewItems"></div>
+    </div>
+  </div>
+
+  <section class="stats">
+    <div class="stats-grid">
+      <div class="stat"><h3 id="homeItems">100</h3><p>Pre-Reported Items</p></div>
+      <div class="stat"><h3>4</h3><p>Recovery Stages</p></div>
+      <div class="stat"><h3>10</h3><p>Campus Locations</p></div>
+      <div class="stat"><h3 id="homeClaims">0</h3><p>Claims Tracked</p></div>
+    </div>
+  </section>
+
+  <section class="section" id="how">
+    <div class="section-inner">
+      <div class="eyebrow">How It Works</div>
+      <h2 class="section-title">A clean workflow for a messy school problem.</h2>
+      <p class="section-sub">The system is designed around the exact process a real school needs: reports, staff approval, searchable inventory, student claims, and verified returns.</p>
+      <div class="steps">
+        <div class="step"><div class="step-num">01</div><h3>Report</h3><p>A student or staff member submits a found item with details, location, date, category, and optional photo.</p></div>
+        <div class="step"><div class="step-num">02</div><h3>Approve</h3><p>Staff review new reports before they appear publicly, preventing duplicates and unclear posts.</p></div>
+        <div class="step"><div class="step-num">03</div><h3>Claim</h3><p>Students submit proof of ownership using unique details like initials, stickers, scratches, or contents.</p></div>
+        <div class="step"><div class="step-num">04</div><h3>Return</h3><p>Staff mark the item ready for pickup or returned, creating a clear end-to-end recovery record.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section featured" id="featured">
+    <div class="section-inner">
+      <div class="eyebrow">Recently Reported</div>
+      <h2 class="section-title">Recently reported items.</h2>
+      <p class="section-sub">A clean preview of the current approved inventory, using consistent moving category icons instead of distracting stock photos.</p>
+      <div class="featured-grid" id="featuredItems"></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-inner">
+      <div class="eyebrow">Student Portal</div>
+      <h2 class="section-title">Built like a real school tool.</h2>
+      <p class="section-sub">The site keeps the Regis look, but the main focus is function: report, browse, claim, and verify.</p>
+      <div class="portal-grid">
+        <button class="portal-card" onclick="showPage('report')"><div class="portal-graphic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M15 8h14l7 7v25H15z"/><path d="M29 8v8h8"/><path d="M20 24h12"/><path d="M20 31h9"/></svg></div><h3>Report Item</h3><p>Add a found item with location, description, category, and optional photo upload.</p></button>
+        <button class="portal-card" onclick="showPage('browse')"><div class="portal-graphic" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="22" cy="22" r="11"/><path d="M31 31l8 8"/><path d="M17 22h10"/></svg></div><h3>Browse Items</h3><p>Search the approved inventory across Regis Jesuit campus locations.</p></button>
+        <button class="portal-card" onclick="showPage('claim')"><div class="portal-graphic" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M9 15h30v22H9z"/><path d="M9 16l15 12 15-12"/><path d="M31 9v9"/><path d="M27 14l4 4 4-4"/></svg></div><h3>Claim Item</h3><p>Submit ownership evidence so staff can verify before returning property.</p></button>
+        <button class="portal-card" onclick="showPage('profile')"><div class="portal-graphic" aria-hidden="true"><svg viewBox="0 0 48 48"><circle cx="24" cy="17" r="7"/><path d="M12 39c2.5-8 21.5-8 24 0"/><path d="M15 39h18"/></svg></div><h3>My Profile</h3><p>Log in with your name and student ID to view claim progress and pickup information.</p></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--off)">
+    <div class="section-inner">
+      <div class="eyebrow">Campus Impact</div>
+      <h2 class="section-title">Designed around clarity and trust.</h2>
+      <div class="quote-grid">
+        <div class="quote"><p>“Instead of checking the office every day, students can search what has already been approved.”</p><strong>— Student use case</strong></div>
+        <div class="quote"><p>“The claim evidence step helps staff confirm ownership before returning an item.”</p><strong>— Staff use case</strong></div>
+        <div class="quote"><p>“The admin dashboard turns a lost-and-found box into a tracked recovery process.”</p><strong>— System use case</strong></div>
+      </div>
+    </div>
+  </section>
+</section>
+
+<section id="browse" class="page internal">
+  <div class="internal-inner">
+    <div class="page-header">
+      <h1>Browse Found Items</h1>
+      <p>Search approved lost-and-found listings by keyword, category, location, status, or item ID.</p>
+    </div>
+    <div class="filters">
+      <input id="searchInput" placeholder="Search item, ID, location, reporter..." oninput="renderItems()">
+      <select id="categoryFilter" onchange="renderItems()"><option value="">All categories</option></select>
+      <select id="locationFilter" onchange="renderItems()"><option value="">All locations</option></select>
+      <select id="statusFilter" onchange="renderItems()"><option value="">All statuses</option><option>Available</option><option>Claimed</option><option>Ready for Pickup</option></select>
+      <button class="btn-mini" onclick="showPage('report')">Report Item</button>
+    </div>
+    <div class="results-bar">
+      <span class="result-pill" id="resultCount">Showing 0 items</span>
+      <select id="sortFilter" onchange="renderItems()" style="max-width:240px"><option value="newest">Sort: Newest first</option><option value="oldest">Sort: Oldest first</option><option value="az">Sort: A-Z</option></select>
+    </div>
+    <div class="items-grid" id="itemsList"></div>
+  </div>
+</section>
+
+<section id="report" class="page internal">
+  <div class="internal-inner">
+    <div class="page-header">
+      <h1>Report a Found Item</h1>
+      <p>New reports go to staff as <b>Pending Approval</b> before appearing publicly in Browse Items.</p>
+    </div>
+    <div class="form-card">
+      <form class="form" id="reportForm">
+        <div class="form-row">
+          <label>Item Name*<input id="itemName" required placeholder="Blue Hydro Flask"></label>
+          <label>Category*<select id="itemCategory" required></select></label>
+        </div>
+        <label>Description*<textarea id="itemDescription" required minlength="8" placeholder="Color, brand, stickers, initials, scratches, contents..."></textarea></label>
+        <div class="form-row">
+          <label>Date Found*<input type="date" id="dateFound" required></label>
+          <label>Location Found*<input id="locationFound" required placeholder="Library, Chapel, Boys Division Cafeteria..."></label>
+        </div>
+        <div class="form-row">
+          <label>Reported By*<input id="finderName" required placeholder="Front Desk"></label>
+          <label>Reporter Email<input type="email" id="finderEmail" placeholder="optional"></label>
+        </div>
+        <label>Photo Upload <span class="help-text">(optional)</span>
+          <input type="file" id="itemPhoto" accept="image/*">
+          <span class="help-text">Optional: take a photo or choose one from camera roll/files if your device offers it. Preloaded demo items use icons, not random photos.</span>
+        </label>
+        <div class="preview-wrap hidden" id="photoPreviewWrap">
+          <img id="photoPreview" alt="Uploaded item preview">
+          <span class="help-text">Photo ready. It will be saved with this report during the demo.</span>
+        </div>
+        <button class="btn-primary" type="submit">Submit for Staff Approval</button>
+        <p id="reportMessage" class="message"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="claim" class="page internal">
+  <div class="internal-inner">
+    <div class="page-header">
+      <h1>Claim an Item</h1>
+      <p>Submit specific evidence so staff can verify that the item belongs to you.</p>
+    </div>
+    <div class="form-card">
+      <form class="form" id="claimForm">
+        <label>Item ID or Item Name*<input id="claimItemRef" required placeholder="RJ-2500"></label>
+        <div class="form-row">
+          <label>Student ID*<input id="studentId" required placeholder="Student ID"></label>
+          <label>Student Name*<input id="studentName" required placeholder="First Last"></label>
+        </div>
+        <div class="form-row">
+          <label>Email*<input type="email" id="claimerEmail" required placeholder="student@regisjesuit.com"></label>
+          <label>Where did you lose it?*<input id="claimLocationGuess" required placeholder="Library, gym, cafeteria..."></label>
+        </div>
+        <label>Evidence it is yours*<textarea id="claimEvidence" required minlength="12" placeholder="The lock screen photo is my dog. There is a blue sticker on the back. My initials are written inside."></textarea></label>
+        <button class="btn-primary" type="submit">Submit Claim</button>
+        <p id="claimMessage" class="message"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<section id="profile" class="page internal">
+  <div class="internal-inner">
+    <div class="page-header">
+      <h1>My Profile</h1>
+      <p>Log in with your student name and student ID to view your claims and pickup information.</p>
+    </div>
+    <div class="two-col">
+      <div class="panel" id="profileLoginPanel">
+        <h2>Student Login</h2>
+        <form class="form" id="profileForm">
+          <label>Student ID<input id="profileStudentId" required placeholder="Student ID"></label>
+          <label>First and Last Name<input id="profileStudentName" required placeholder="First Last"></label>
+          <button class="btn-primary" type="submit">Log In</button>
+          <p id="profileMessage" class="message error"></p>
+        </form>
+      </div>
+      <div class="panel hidden" id="profilePanel">
+        <h2 id="profileWelcome">Welcome</h2>
+        <p class="meta" style="margin-bottom:1rem">Your submitted claims and statuses appear here.</p>
+        <div id="profileClaims"></div>
+        <button class="btn-mini light" onclick="profileLogout()">Log Out</button>
+      </div>
+      <div class="panel">
+        <h2>Pickup Schedule</h2>
+        <p class="meta" style="margin-bottom:1rem">Highlighted blocks show pickup times.</p>
+        <div class="schedule" id="pickupSchedule"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="help" class="page internal">
+  <div class="internal-inner">
+    <div class="page-header">
+      <h1>Help & Documentation</h1>
+      <p>Student help, FAQ, responsive testing proof, design system, and source-code explanation in one professional section.</p>
+    </div>
+    <div class="two-col">
+      <div class="panel">
+        <h2>Lost & Found Support</h2>
+        <p class="meta">For claim support, corrections, or item questions, contact:</p>
+        <a class="contact-email" href="mailto:christinja27@student.regisjesuit.com">✉ christinja27@student.regisjesuit.com</a>
+        <p class="meta" style="margin-top:1rem">Typical response time: within one school day.</p>
+      </div>
+      <div class="panel">
+        <h2>Frequently Asked Questions</h2>
+        <div class="faq-row"><b>How do I claim an item?</b><p class="meta">Open Browse Items, choose the item, and submit evidence that proves it belongs to you.</p></div>
+        <div class="faq-row"><b>Why do staff approve reports first?</b><p class="meta">Approval prevents duplicates, unclear descriptions, and inaccurate posts from appearing publicly.</p></div>
+        <div class="faq-row"><b>Where do I pick up approved items?</b><p class="meta">Approved items can be picked up during highlighted pickup periods shown on My Profile.</p></div>
+      </div>
+    </div>
+
+    <div class="device-showcase">
+      <div class="eyebrow">Responsive Design Testing</div>
+      <h2 class="section-title" style="font-size:clamp(2rem,4vw,3.4rem)">Computer, tablet, and phone proof.</h2>
+      <p class="section-sub" style="margin-bottom:1rem">The layout was tested across desktop, tablet-sized, and mobile viewports. Cards, filters, forms, navigation, and staff tools stay readable and functional.</p>
+      
+<div class="devices" aria-label="Device compatibility mockup">
+        <button class="device desktop preview-trigger" type="button" onclick="openDevicePreview('desktop')" aria-label="Open computer preview">
+          <div class="screen">
+            <div class="responsive-home desktop-view">
+              <div class="rh-nav"><span>RJ Lost &amp; Found</span><small>How It Works &nbsp; Report Item &nbsp; Browse</small></div>
+              <div class="rh-hero">
+                <div class="rh-copy">
+                  <div class="rh-badge">REGIS JESUIT RECOVERY SYSTEM</div>
+                  <div class="rh-title">Regis Jesuit<br><span>Lost &amp; Found</span></div>
+                  <p>A campus-wide tool for reporting found items, searching approved listings, and submitting claims.</p>
+                  <div class="rh-search"><span>Search AirPods, hoodie, Hydro Flask...</span><b>SEARCH</b></div>
+                  <div class="rh-buttons"><em>REPORT A FOUND ITEM</em><em>BROWSE FOUND ITEMS</em></div>
+                </div>
+                <div class="rh-card">
+                  <div class="rh-red">Regis Jesuit<br>Lost &amp; Found<small>Report → Staff Approval → Browse → Claim → Returned</small></div>
+                  <div class="rh-row"><i></i><strong>Blue Hydro Flask<br><small>Library • RJ-2500</small></strong><span>Water Bottles</span></div>
+                  <div class="rh-row"><i></i><strong>AirPods Case<br><small>Library • RJ-2501</small></strong><span>Electronics</span></div>
+                  <div class="rh-row"><i></i><strong>TI-84 Calculator<br><small>Gym • RJ-2502</small></strong><span>School Supplies</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="device-label">Computer View<span class="device-hint">Click to enlarge</span></div>
+        </button>
+
+        <button class="device tablet preview-trigger" type="button" onclick="openDevicePreview('tablet')" aria-label="Open tablet preview">
+          <div class="screen">
+            <div class="responsive-home tablet-view">
+              <div class="rh-nav"><span>RJ Lost &amp; Found</span><small>☰</small></div>
+              <div class="rh-copy">
+                <div class="rh-badge">REGIS JESUIT RECOVERY SYSTEM</div>
+                <div class="rh-title">Regis Jesuit<br><span>Lost &amp; Found</span></div>
+                <p>A campus-wide tool for reporting found items and submitting claims.</p>
+                <div class="rh-search"><span>Search items...</span><b>SEARCH</b></div>
+              </div>
+              <div class="rh-card">
+                <div class="rh-red">Regis Jesuit<br>Lost &amp; Found<small>Report → Browse → Claim</small></div>
+                <div class="rh-row"><i></i><strong>Blue Hydro Flask<br><small>Library • RJ-2500</small></strong><span>Water Bottles</span></div>
+                <div class="rh-row"><i></i><strong>AirPods Case<br><small>Library • RJ-2501</small></strong><span>Electronics</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="device-label">Tablet View<span class="device-hint">Click to enlarge</span></div>
+        </button>
+
+        <button class="device phone preview-trigger" type="button" onclick="openDevicePreview('phone')" aria-label="Open phone preview">
+          <div class="screen">
+            <div class="responsive-home phone-view">
+              <div class="rh-nav"><span>RJ</span><small>☰</small></div>
+              <div class="rh-copy">
+                <div class="rh-title">Regis Jesuit<br><span>Lost &amp; Found</span></div>
+                <p>Report, browse, and claim found items.</p>
+                <div class="rh-search"><span>Search...</span><b>GO</b></div>
+              </div>
+              <div class="rh-card">
+                <div class="rh-red">Regis Jesuit<br>Lost &amp; Found<small>Report → Claim</small></div>
+                <div class="rh-row"><i></i><strong>Blue Hydro Flask<br><small>RJ-2500</small></strong></div>
+                <div class="rh-row"><i></i><strong>AirPods Case<br><small>RJ-2501</small></strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="device-label">Phone View<span class="device-hint">Click to enlarge</span></div>
+        </button>
+      </div>
+    </div><div class="mini-card"><div class="mini-card-line"></div><div class="mini-card-line" style="width:80%"></div><div class="mini-card-line" style="width:65%"></div></div></div><div class="mini-grid"><div class="mini-item"></div><div class="mini-item"></div><div class="mini-item"></div></div></div></div>
+        <div class="device tablet"><div class="screen"><div class="mini-nav">RJ Lost & Found <span>☰</span></div><div class="mini-hero"><div><div class="mini-title">Regis Jesuit<br><span>Lost & Found</span></div><div class="mini-text"></div></div><div class="mini-card"><div class="mini-card-line"></div><div class="mini-card-line" style="width:75%"></div></div></div><div class="mini-grid"><div class="mini-item"></div><div class="mini-item"></div></div></div></div>
+        <div class="device phone"><div class="screen"><div class="mini-nav">RJ <span>☰</span></div><div class="mini-hero"><div><div class="mini-title">Regis Jesuit<br><span>Lost & Found</span></div><div class="mini-text"></div></div><div class="mini-card"><div class="mini-card-line"></div><div class="mini-card-line" style="width:80%"></div></div></div><div class="mini-grid"><div class="mini-item"></div></div></div></div>
+      </div>
+    </div>
+
+    <section class="section" style="padding-left:0;padding-right:0;padding-bottom:0">
+      <div class="section-inner">
+        <div class="eyebrow">Technical Documentation</div>
+        <h2 class="section-title">Source-code proof without dumping every line.</h2>
+        <p class="section-sub">This section is built for judges. It explains the workflow, technologies, accessibility, reusable components, and selected code logic.</p>
+        <div class="doc-grid">
+          <div class="doc-card"><h3>System Workflow</h3><p>Report Item → Staff Approval → Browse Listing → Claim Request → Staff Review → Returned.</p></div>
+          <div class="doc-card"><h3>Technologies Used</h3><ul><li>HTML for structure</li><li>CSS for layout and responsive design</li><li>JavaScript for forms, filtering, storage, and admin actions</li><li>localStorage to simulate a database during the demo</li></ul></div>
+          <div class="doc-card"><h3>Key Coding Features</h3><ul><li>automatic RJ item IDs</li><li>form validation</li><li>optional photo upload preview</li><li>search and filters</li><li>claim request system</li><li>staff approval dashboard</li></ul></div>
+          <div class="doc-card"><h3>Design System</h3><p>Sharp 90-degree buttons, Regis red actions, serif headings, clean body text, consistent cards, animated category icons, status badges, and repeated page layouts.</p><div class="palette"><span class="swatch" style="background:#A9292E"></span><span class="swatch" style="background:#111827"></span><span class="swatch" style="background:#F8EDEE"></span><span class="swatch" style="background:#F8F6F2"></span></div></div>
+        </div>
+        <div class="panel" style="margin-top:1rem">
+          <h2>Selected Code Samples</h2>
+          <div class="code-row"><b>Automatic item ID + pending approval</b><pre>const newItem = {
+  id: nextItemId(),
+  status: "Pending Approval",
+  photo: uploadedPhotoData || "",
+  createdAt: Date.now()
+};
+items.unshift(newItem);
+saveData();</pre></div>
+          <div class="code-row"><b>Search and filter logic</b><pre>const filtered = publicItems.filter(item => {
+  const text = `${item.id} ${item.name} ${item.category} ${item.location}`.toLowerCase();
+  return text.includes(search) && matchesCategory && matchesLocation && matchesStatus;
+});</pre></div>
+          <div class="code-row"><b>Staff status update</b><pre>function updateItem(id, status) {
+  const item = items.find(item => item.id === id);
+  if (!item) return;
+  item.status = status;
+  saveData();
+  renderAll();
+}</pre></div>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section id="staff" class="page internal">
+  <div class="internal-inner">
+    <div class="page-header">
+      <h1>Staff Dashboard</h1>
+      <p>Authorized staff can review item reports, approve listings, manage claim evidence, and close returned items.</p>
+    </div>
+    <div class="panel" id="staffLoginPanel" style="max-width:460px">
+      <h2>Staff Login</h2>
+      <p class="meta" style="margin-bottom:1rem">Authorized staff only.</p>
+      <label>Password<input type="password" id="staffPassword" placeholder="Enter staff password"></label>
+      <button class="btn-primary" style="margin-top:1rem" onclick="staffLogin()">Enter Dashboard</button>
+      <p id="staffLoginMessage" class="message error"></p>
+    </div>
+    <div id="staffPanel" class="hidden staff-layout">
+      <aside>
+        <div class="staff-stats">
+          <div class="staff-stat"><h3 id="staffItemCount">0</h3><p>Total Items</p></div>
+          <div class="staff-stat"><h3 id="staffPendingCount">0</h3><p>Pending</p></div>
+          <div class="staff-stat"><h3 id="staffClaimCount">0</h3><p>Claims</p></div>
+          <div class="staff-stat"><h3 id="staffReturned">0</h3><p>Returned</p></div>
+        </div>
+        <div class="tabs">
+          <button class="tab active" id="tabPending" onclick="setStaffTab('pending')">Pending Items</button>
+          <button class="tab" id="tabApproved" onclick="setStaffTab('approved')">Approved Listings</button>
+          <button class="tab" id="tabClaims" onclick="setStaffTab('claims')">Claim Requests</button>
+          <button class="tab" id="tabReturned" onclick="setStaffTab('returned')">Returned / Archived</button>
+        </div>
+        <button class="btn-mini light" style="margin-top:1rem;width:100%" onclick="resetDemoData()">Reset Demo Data</button>
+      </aside>
+      <div>
+        <div id="staffPending"></div>
+        <div id="staffApproved" class="hidden"></div>
+        <div id="staffClaims" class="hidden"></div>
+        <div id="staffReturnedPanel" class="hidden"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<div id="devicePreviewModal" class="preview-modal" onclick="closeDevicePreview(event)">
+  <div class="preview-dialog" role="dialog" aria-modal="true" aria-labelledby="devicePreviewTitle">
+    <div class="preview-top">
+      <div>
+        <div class="eyebrow">Responsive Preview</div>
+        <h3 id="devicePreviewTitle">Device Preview</h3>
+      </div>
+      <button class="preview-close" type="button" onclick="closeDevicePreview()">Close</button>
+    </div>
+    <div class="preview-stage">
+      <div id="previewFrame" class="preview-frame desktop">
+        <div class="screen" id="devicePreviewScreen"></div>
+      </div>
+    </div>
+    <p id="devicePreviewCaption" class="preview-caption">Each preview uses the same approved homepage design, but the layout adjusts to match the device size.</p>
+  </div>
+</div>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <strong>Regis Jesuit Lost & Found</strong>
+    <span>Report • Search • Verify • Recover</span>
+  </div>
+</footer>
+
+<script>
+const STAFF_PASSWORD = "GoRaiders";
+const DEMO_STUDENT_ID = "200126100";
+const DEMO_STUDENT_NAME = "James Christin";
+const ITEM_KEY = "rj_lost_found_items_v6_icons";
+const CLAIM_KEY = "rj_lost_found_claims_v6_icons";
+const STAFF_TABS = ["pending", "approved", "claims", "returned"];
+let staffTab = "pending";
+let staffAuthed = false;
+let items = [];
+let claims = [];
+let uploadedPhotoData = "";
+
+const LOCATIONS = ["Boys Division Cafeteria", "Girls Division Cafeteria", "Library", "Chapel", "Gym", "Quad", "Classrooms", "Tennis Courts", "Athletic Fields", "Parking Lot"];
+const CATEGORIES = ["Clothing", "Electronics", "Water Bottles", "School Supplies", "Sports Equipment", "Books", "Keys", "Lunch / Food", "Faith Items", "Other"];
+const REPORTERS = ["Coach Martinez", "Mrs. O'Brien", "Mr. Flanagan", "Front Desk", "Security Office", "Ms. Hernandez", "Coach Williams", "Mr. Kavanagh", "Library Staff", "Cafeteria Staff"];
+const ITEM_NAMES = [
+  "Blue Hydro Flask","AirPods Case","TI-84 Calculator","RJ Quarter Zip","Black Nike Hoodie","Red Stanley Cup","Apple AirPods","Graphing Calculator","Green Backpack","Volleyball",
+  "Soccer Cleats","Baseball Cap","Gray Sweatshirt","iPhone Charger","MacBook Charger","USB-C Cable","Spanish Textbook","AP Chemistry Notebook","Biology Lab Manual","English Novel",
+  "Silver Key Ring","House Keys","Car Keys","Lanyard with Keys","Red Lunch Box","Glasses Case","Sunglasses","Retainer Case","Football Gloves","Lacrosse Stick",
+  "Tennis Racket","Golf Club","Blue Nalgene","White Water Bottle","Black Hydro Flask","Purple Water Bottle","Chromebook","iPad Case","Wireless Earbuds","Laptop Sleeve",
+  "Planner Notebook","Pencil Case","Ruler Set","Colored Pencils","RJ Sweatpants","Athletic Shorts","Track Jacket","Soccer Jersey","Rosary Beads","Prayer Book",
+  "Saint Joseph Missal","Bible","Brown Wallet","Black Wallet","Card Holder","AirTag Keychain","PE Uniform Top","PE Uniform Shorts","Swim Goggles","Red Folder",
+  "Binder","Spiral Notebook","Composition Book","Protein Shaker","Lunch Bag","Tupperware Set","Thermos","Umbrella","Rain Jacket","Winter Gloves",
+  "Beanie Hat","Guitar Pick","Music Folder","Band Sheet Music","Instrument Strap","Photo ID Card","Library Book","Hall Pass","Permission Slip","Knee Brace",
+  "Athletic Tape","Chemistry Safety Goggles","Science Ruler","Protractor Set","Compass","Debate Notes","History Flashcards","Math Formula Sheet","ACT Prep Book","Volleyball Knee Pads",
+  "Basketball","Lacrosse Helmet","Football","Black Fleece Jacket","Zip-Up Hoodie","Long Sleeve Shirt","Polo Shirt","Graphing Notebook","Art Sketchbook","Drawing Kit"
+];
+
+function rng(seed) {
+  let x = seed;
+  return () => {
+    x = (x * 1664525 + 1013904223) >>> 0;
+    return x / 4294967295;
+  };
+}
+const rand = rng(42);
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadData();
+  if (!Array.isArray(items) || items.length < 100 || items.some(item => item.image)) {
+    items = makeItems();
+    saveData();
+  }
+  if (!Array.isArray(claims) || claims.length === 0) {
+    claims = makeClaims();
+    saveData();
+  }
+  populateControls();
+  setupForms();
+  initDevicePreviews();
+  renderAll();
+  const df = document.getElementById("dateFound");
+  if (df) df.valueAsDate = new Date();
+});
+
+
+
+function miniPreviewMarkup(type) {
+  if (type === "phone") {
+    return `<div class="responsive-home phone-view">
+      <div class="rh-nav"><span>RJ</span><small>☰</small></div>
+      <div class="rh-copy">
+        <div class="rh-title">Regis Jesuit<br><span>Lost &amp; Found</span></div>
+        <p>Report, browse, and claim found items.</p>
+        <div class="rh-search"><span>Search...</span><b>GO</b></div>
+      </div>
+      <div class="rh-card">
+        <div class="rh-red">Regis Jesuit<br>Lost &amp; Found<small>Report → Claim</small></div>
+        <div class="rh-row"><i></i><strong>Blue Hydro Flask<br><small>RJ-2500</small></strong></div>
+        <div class="rh-row"><i></i><strong>AirPods Case<br><small>RJ-2501</small></strong></div>
+        <div class="rh-row"><i></i><strong>TI-84 Calculator<br><small>RJ-2502</small></strong></div>
+      </div>
+    </div>`;
+  }
+  if (type === "tablet") {
+    return `<div class="responsive-home tablet-view">
+      <div class="rh-nav"><span>RJ Lost &amp; Found</span><small>☰</small></div>
+      <div class="rh-copy">
+        <div class="rh-badge">REGIS JESUIT RECOVERY SYSTEM</div>
+        <div class="rh-title">Regis Jesuit<br><span>Lost &amp; Found</span></div>
+        <p>A campus-wide tool for reporting found items and submitting claims.</p>
+        <div class="rh-search"><span>Search items...</span><b>SEARCH</b></div>
+      </div>
+      <div class="rh-card">
+        <div class="rh-red">Regis Jesuit<br>Lost &amp; Found<small>Report → Staff Approval → Browse → Claim</small></div>
+        <div class="rh-row"><i></i><strong>Blue Hydro Flask<br><small>Library • RJ-2500</small></strong><span>Water Bottles</span></div>
+        <div class="rh-row"><i></i><strong>AirPods Case<br><small>Library • RJ-2501</small></strong><span>Electronics</span></div>
+        <div class="rh-row"><i></i><strong>TI-84 Calculator<br><small>Gym • RJ-2502</small></strong><span>School Supplies</span></div>
+      </div>
+    </div>`;
+  }
+  return `<div class="responsive-home desktop-view">
+    <div class="rh-nav"><span>RJ Lost &amp; Found</span><small>How It Works &nbsp; Report Item &nbsp; Recent Items &nbsp; Browse</small></div>
+    <div class="rh-hero">
+      <div class="rh-copy">
+        <div class="rh-badge">REGIS JESUIT RECOVERY SYSTEM</div>
+        <div class="rh-title">Regis Jesuit<br><span>Lost &amp; Found</span></div>
+        <p>A campus-wide tool for reporting found items, searching approved listings, submitting claims, and letting staff verify returns.</p>
+        <div class="rh-search"><span>Search AirPods, hoodie, Hydro Flask, RJ-2500...</span><b>SEARCH</b></div>
+        <div class="rh-buttons"><em>REPORT A FOUND ITEM</em><em>BROWSE FOUND ITEMS</em></div>
+      </div>
+      <div class="rh-card">
+        <div class="rh-red">Regis Jesuit<br>Lost &amp; Found<small>Report → Staff Approval → Browse → Claim → Returned</small></div>
+        <div class="rh-row"><i></i><strong>Blue Hydro Flask<br><small>Library • RJ-2500</small></strong><span>Water Bottles</span></div>
+        <div class="rh-row"><i></i><strong>AirPods Case<br><small>Library • RJ-2501</small></strong><span>Electronics</span></div>
+        <div class="rh-row"><i></i><strong>TI-84 Calculator<br><small>Gym • RJ-2502</small></strong><span>School Supplies</span></div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function initDevicePreviews() {
+  // Device previews are already built into the Help & Documentation cards.
+}
+
+function openDevicePreview(type) {
+  const modal = document.getElementById("devicePreviewModal");
+  const frame = document.getElementById("previewFrame");
+  const screen = document.getElementById("devicePreviewScreen");
+  const title = document.getElementById("devicePreviewTitle");
+  const caption = document.getElementById("devicePreviewCaption");
+  const labels = { desktop: "Computer Preview", tablet: "Tablet Preview", phone: "Phone Preview" };
+  if (!modal || !frame || !screen || !title || !caption) return;
+  frame.className = "preview-frame " + type;
+  screen.innerHTML = miniPreviewMarkup(type);
+  title.textContent = labels[type] || "Device Preview";
+  const deviceWord = type === "desktop" ? "computer" : type;
+  caption.textContent = `This ${deviceWord} preview uses the same approved homepage design, but the layout reflows instead of simply cropping one desktop screenshot.`;
+  modal.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeDevicePreview(event) {
+  if (event && event.target && event.target.closest && event.target.closest(".preview-dialog") && !event.target.classList.contains("preview-close")) return;
+  const modal = document.getElementById("devicePreviewModal");
+  if (modal) modal.classList.remove("open");
+  document.body.style.overflow = "";
+}
+
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeDevicePreview();
+});
+
+function loadData() {
+  try { items = JSON.parse(localStorage.getItem(ITEM_KEY) || "[]"); } catch { items = []; }
+  try { claims = JSON.parse(localStorage.getItem(CLAIM_KEY) || "[]"); } catch { claims = []; }
+}
+function saveData() {
+  localStorage.setItem(ITEM_KEY, JSON.stringify(items));
+  localStorage.setItem(CLAIM_KEY, JSON.stringify(claims));
+}
+function resetDemoData() {
+  if (!confirm("Reset demo data back to 100 pre-reported items?")) return;
+  items = makeItems();
+  claims = makeClaims();
+  saveData();
+  renderAll();
+}
+function makeItems() {
+  const arr = [];
+  for (let i = 0; i < 100; i++) {
+    const name = ITEM_NAMES[i % ITEM_NAMES.length];
+    const category = categoryFor(name, i);
+    const location = LOCATIONS[Math.floor(rand() * LOCATIONS.length)];
+    const reporter = REPORTERS[Math.floor(rand() * REPORTERS.length)];
+    const d = new Date();
+    d.setDate(d.getDate() - (i % 30));
+    let status = "Available";
+    const roll = rand();
+    if (roll > .78 && roll <= .88) status = "Claimed";
+    if (roll > .88 && roll <= .95) status = "Ready for Pickup";
+    if (roll > .95) status = "Returned";
+    arr.push({
+      id: `RJ-${2500 + i}`,
+      name, category, location, reporter, status,
+      dateFound: d.toISOString().split("T")[0],
+      description: `${name} found in good condition at ${location}. Staff should verify unique details before returning it.`,
+      photo: "",
+      createdAt: Date.now() - i * 700000
+    });
+  }
+  return arr;
+}
+function makeClaims() {
+  return [
+    {id:"CLAIM-7401",itemRef:"RJ-2500",studentId:DEMO_STUDENT_ID,studentName:"James Christin",email:"james.christin@regisjesuit.com",locationGuess:"Boys Division Cafeteria",evidence:"It has a dent by the lid and an RJ tennis sticker on the side.",status:"Approved",createdAt:Date.now()-4600000},
+    {id:"CLAIM-7402",itemRef:"RJ-2530",studentId:DEMO_STUDENT_ID,studentName:"James Christin",email:"james.christin@regisjesuit.com",locationGuess:"Tennis Courts",evidence:"The grip is black and there is overgrip in the side pocket.",status:"Under Review",createdAt:Date.now()-3100000},
+    {id:"CLAIM-7403",itemRef:"RJ-2502",studentId:"200111222",studentName:"Emma Walsh",email:"emma.walsh@regisjesuit.com",locationGuess:"Science hallway",evidence:"My calculator has a tiny silver star sticker near the screen.",status:"Under Review",createdAt:Date.now()-2200000},
+    {id:"CLAIM-7404",itemRef:"RJ-2524",studentId:"200333444",studentName:"Noah Garcia",email:"noah.garcia@regisjesuit.com",locationGuess:"Gym",evidence:"There is a small tear on the inside pocket and a lunch card inside.",status:"Ready for Pickup",createdAt:Date.now()-1250000}
+  ];
+}
+function categoryFor(name, i) {
+  const s = name.toLowerCase();
+  if (s.includes("hoodie")||s.includes("quarter")||s.includes("sweat")||s.includes("jacket")||s.includes("shirt")||s.includes("shorts")||s.includes("uniform")||s.includes("cap")||s.includes("hat")||s.includes("gloves")||s.includes("polo")) return "Clothing";
+  if (s.includes("airpod")||s.includes("charger")||s.includes("ipad")||s.includes("chromebook")||s.includes("earbud")||s.includes("laptop")||s.includes("usb")) return "Electronics";
+  if (s.includes("hydro")||s.includes("bottle")||s.includes("stanley")||s.includes("nalgene")||s.includes("thermos")||s.includes("shaker")) return "Water Bottles";
+  if (s.includes("calculator")||s.includes("notebook")||s.includes("binder")||s.includes("folder")||s.includes("pencil")||s.includes("ruler")||s.includes("portfolio")||s.includes("protractor")||s.includes("compass")||s.includes("flashcards")||s.includes("formula")) return "School Supplies";
+  if (s.includes("volleyball")||s.includes("soccer")||s.includes("cleats")||s.includes("tennis")||s.includes("golf")||s.includes("lacrosse")||s.includes("football")||s.includes("swim")||s.includes("basketball")||s.includes("brace")||s.includes("athletic")) return "Sports Equipment";
+  if (s.includes("book")||s.includes("textbook")||s.includes("manual")||s.includes("novel")||s.includes("bible")||s.includes("missal")) return "Books";
+  if (s.includes("key")||s.includes("lanyard")||s.includes("airtag")) return "Keys";
+  if (s.includes("lunch")||s.includes("tupperware")) return "Lunch / Food";
+  if (s.includes("rosary")||s.includes("prayer")||s.includes("missal")||s.includes("bible")) return "Faith Items";
+  return CATEGORIES[i % CATEGORIES.length];
+}
+
+function populateControls() {
+  const cf = document.getElementById("categoryFilter");
+  const lf = document.getElementById("locationFilter");
+  const ic = document.getElementById("itemCategory");
+  if (cf && cf.options.length === 1) CATEGORIES.forEach(c => cf.innerHTML += `<option>${escapeHtml(c)}</option>`);
+  if (ic && ic.options.length === 0) CATEGORIES.forEach(c => ic.innerHTML += `<option>${escapeHtml(c)}</option>`);
+  if (lf && lf.options.length === 1) LOCATIONS.forEach(l => lf.innerHTML += `<option>${escapeHtml(l)}</option>`);
+}
+function setupForms() {
+  document.getElementById("reportForm")?.addEventListener("submit", e => { e.preventDefault(); addItem(); });
+  document.getElementById("claimForm")?.addEventListener("submit", e => { e.preventDefault(); submitClaim(); });
+  document.getElementById("profileForm")?.addEventListener("submit", e => { e.preventDefault(); profileLogin(); });
+  document.getElementById("itemPhoto")?.addEventListener("change", handlePhotoUpload);
+}
+function toggleMenu() {
+  document.getElementById("navLinks")?.classList.toggle("open");
+}
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.getElementById(id)?.classList.add("active");
+  document.getElementById("navLinks")?.classList.remove("open");
+  window.scrollTo(0,0);
+  if (id === "browse") renderItems();
+  if (id === "staff" && staffAuthed) renderStaff();
+  if (id === "profile") renderProfileClaims();
+}
+function scrollHome(target) {
+  showPage("home");
+  setTimeout(() => document.getElementById(target)?.scrollIntoView({behavior:"smooth"}), 50);
+}
+function heroSearchKey(e) { if (e.key === "Enter") heroSearch(); }
+function heroSearch() {
+  document.getElementById("searchInput").value = document.getElementById("heroSearch").value;
+  showPage("browse");
+  renderItems();
+}
+function renderAll() {
+  renderStats();
+  renderHeroPreview();
+  renderFeatured();
+  renderItems();
+  renderSchedule();
+  renderProfileClaims();
+  if (staffAuthed) renderStaff();
+}
+function renderStats() {
+  document.getElementById("homeItems").textContent = items.length;
+  document.getElementById("homeClaims").textContent = claims.length;
+}
+function renderHeroPreview() {
+  const el = document.getElementById("heroPreviewItems");
+  if (!el) return;
+  el.innerHTML = "";
+  publicItems().slice(0,3).forEach(item => {
+    el.innerHTML += `
+      <div class="visual-item">
+        ${itemIcon(item, "")}
+        <div><strong>${escapeHtml(item.name)}</strong><span>${escapeHtml(item.location)} • <span class="data">${escapeHtml(item.id)}</span></span></div>
+        <div class="pill">${escapeHtml(item.category)}</div>
+      </div>`;
+  });
+}
+function renderFeatured() {
+  const el = document.getElementById("featuredItems");
+  if (!el) return;
+  el.innerHTML = "";
+  publicItems().slice(0,6).forEach(item => {
+    el.innerHTML += `
+      <div class="featured-card">
+        ${itemIcon(item, "")}
+        <div>
+          <h3>${escapeHtml(item.name)}</h3>
+          <p><span class="data">${escapeHtml(item.id)}</span> • ${escapeHtml(item.location)} • ${escapeHtml(item.status)}</p>
+        </div>
+      </div>`;
+  });
+}
+function publicItems() {
+  return items.filter(item => !["Pending Approval","Rejected","Returned"].includes(item.status));
+}
+function renderItems() {
+  const list = document.getElementById("itemsList");
+  if (!list) return;
+  const q = (document.getElementById("searchInput")?.value || "").toLowerCase();
+  const cat = document.getElementById("categoryFilter")?.value || "";
+  const loc = document.getElementById("locationFilter")?.value || "";
+  const status = document.getElementById("statusFilter")?.value || "";
+  const sort = document.getElementById("sortFilter")?.value || "newest";
+  let filtered = publicItems().filter(item => {
+    const text = `${item.id} ${item.name} ${item.category} ${item.location} ${item.reporter} ${item.description} ${item.status}`.toLowerCase();
+    return (!q || text.includes(q)) && (!cat || item.category === cat) && (!loc || item.location === loc) && (!status || item.status === status);
+  });
+  if (sort === "oldest") filtered.sort((a,b) => a.createdAt - b.createdAt);
+  if (sort === "newest") filtered.sort((a,b) => b.createdAt - a.createdAt);
+  if (sort === "az") filtered.sort((a,b) => a.name.localeCompare(b.name));
+  document.getElementById("resultCount").textContent = `Showing ${filtered.length} of ${publicItems().length} approved items`;
+  list.innerHTML = "";
+  filtered.forEach(item => {
+    list.innerHTML += `
+      <article class="item-card">
+        <div class="item-top">
+          <div class="item-location">${escapeHtml(item.location)}</div>
+          ${itemIcon(item, "")}
+        </div>
+        <div class="item-body">
+          <span class="status ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
+          <h3>${escapeHtml(item.name)}</h3>
+          <div class="meta"><b>ID:</b> <span class="data">${escapeHtml(item.id)}</span> • <b>${escapeHtml(item.category)}</b><br>
+          <b>Reported by:</b> ${escapeHtml(item.reporter)} • ${escapeHtml(item.dateFound)}</div>
+          <p>${escapeHtml(item.description)}</p>
+          <div class="card-actions">
+            <button class="btn-mini" onclick="startClaim('${item.id}')">Claim This Item</button>
+            <button class="btn-mini light" onclick="copyId('${item.id}')">Copy ID</button>
+          </div>
+        </div>
+      </article>`;
+  });
+  if (filtered.length === 0) list.innerHTML = `<p class="message soft">No approved items match your search. Try changing the filters or checking recently reported items.</p>`;
+}
+function handlePhotoUpload(e) {
+  const file = e.target.files?.[0];
+  uploadedPhotoData = "";
+  document.getElementById("photoPreviewWrap")?.classList.add("hidden");
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    uploadedPhotoData = String(reader.result || "");
+    const img = document.getElementById("photoPreview");
+    if (img) img.src = uploadedPhotoData;
+    document.getElementById("photoPreviewWrap")?.classList.remove("hidden");
+  };
+  reader.readAsDataURL(file);
+}
+function nextItemId() {
+  const nums = items.map(item => parseInt(String(item.id).replace(/\D/g,""),10)).filter(Boolean);
+  return "RJ-" + (Math.max(2500, ...nums) + 1);
+}
+function addItem() {
+  const name = itemName.value.trim();
+  const category = itemCategory.value;
+  const description = itemDescription.value.trim();
+  const location = locationFound.value.trim();
+  if (!name || !category || description.length < 8 || !dateFound.value || !location || !finderName.value.trim()) {
+    reportMessage.textContent = "Please complete the required fields with clear details.";
+    reportMessage.classList.add("error");
+    return;
+  }
+  const newItem = {
+    id: nextItemId(),
+    name,
+    category,
+    description,
+    dateFound: dateFound.value,
+    location,
+    reporter: finderName.value.trim(),
+    reporterEmail: finderEmail.value.trim(),
+    photo: uploadedPhotoData,
+    status: "Pending Approval",
+    createdAt: Date.now()
+  };
+  items.unshift(newItem);
+  saveData();
+  reportMessage.classList.remove("error");
+  reportMessage.textContent = "Item submitted for staff approval. It is pending until staff reviews it.";
+  reportForm.reset();
+  uploadedPhotoData = "";
+  document.getElementById("photoPreviewWrap")?.classList.add("hidden");
+  dateFound.valueAsDate = new Date();
+  renderAll();
+}
+function startClaim(id) {
+  showPage("claim");
+  claimItemRef.value = id;
+  studentId.value = "";
+  studentName.value = "";
+  claimerEmail.value = "";
+  claimLocationGuess.value = "";
+  claimEvidence.focus();
+}
+function submitClaim() {
+  if (claimEvidence.value.trim().length < 12) {
+    claimMessage.textContent = "Please include more specific evidence so staff can verify ownership.";
+    claimMessage.classList.add("error");
+    return;
+  }
+  const claim = {
+    id: "CLAIM-" + Math.floor(1000 + Math.random()*9000),
+    itemRef: claimItemRef.value.trim(),
+    studentId: studentId.value.trim(),
+    studentName: studentName.value.trim(),
+    email: claimerEmail.value.trim(),
+    locationGuess: claimLocationGuess.value.trim(),
+    evidence: claimEvidence.value.trim(),
+    status: "Under Review",
+    createdAt: Date.now()
+  };
+  claims.unshift(claim);
+  const item = items.find(i => i.id === claim.itemRef);
+  if (item && item.status === "Available") item.status = "Claimed";
+  saveData();
+  claimMessage.classList.remove("error");
+  claimMessage.textContent = "Claim submitted. Staff can now review it in the dashboard.";
+  claimForm.reset();
+  renderAll();
+}
+function copyId(id) {
+  navigator.clipboard?.writeText(id);
+  alert("Copied item ID: " + id);
+}
+function normalizeName(n) { return String(n || "").trim().replace(/\s+/g," ").toLowerCase(); }
+function profileLogin() {
+  const ok = profileStudentId.value.trim() === DEMO_STUDENT_ID && normalizeName(profileStudentName.value) === normalizeName(DEMO_STUDENT_NAME);
+  if (!ok) { profileMessage.textContent = "Login failed. Check your student name and student ID."; return; }
+  profileLoginPanel.classList.add("hidden");
+  profilePanel.classList.remove("hidden");
+  profileWelcome.textContent = "Welcome, James Christin";
+  renderProfileClaims();
+}
+function profileLogout() {
+  profileLoginPanel.classList.remove("hidden");
+  profilePanel.classList.add("hidden");
+  profileMessage.textContent = "";
+}
+function renderProfileClaims() {
+  const el = document.getElementById("profileClaims");
+  if (!el) return;
+  const mine = claims.filter(c => String(c.studentId) === DEMO_STUDENT_ID);
+  el.innerHTML = "";
+  if (mine.length === 0) { el.innerHTML = `<p class="message soft">No claims yet.</p>`; return; }
+  mine.forEach(c => {
+    const item = items.find(i => i.id === c.itemRef);
+    el.innerHTML += `
+      <div class="claim-row">
+        <div class="row-top">
+          <div>
+            <span class="status ${statusClass(c.status)}">${escapeHtml(c.status)}</span>
+            <h3>${escapeHtml(item ? item.name : c.itemRef)}</h3>
+            <p class="meta"><b>Claim:</b> <span class="data">${escapeHtml(c.id)}</span><br>
+            <b>Item:</b> <span class="data">${escapeHtml(c.itemRef)}</span><br>
+            <b>Evidence:</b> ${escapeHtml(c.evidence)}</p>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+function renderSchedule() {
+  const el = document.getElementById("pickupSchedule");
+  if (!el) return;
+  const days = ["Mon","Tue","Wed","Thu","Fri"];
+  const periods = ["1st","Support","2nd","3rd","Lunch","4th","5th","6th"];
+  const open = {Mon:["Support","Lunch","5th"], Tue:["2nd","Lunch"], Wed:["1st","4th"], Thu:["3rd","Lunch","6th"], Fri:["Support","2nd"]};
+  el.innerHTML = "<div></div>";
+  days.forEach(d => el.innerHTML += `<div class="day">${d}</div>`);
+  periods.forEach(p => {
+    el.innerHTML += `<div class="period">${p}</div>`;
+    days.forEach(d => el.innerHTML += `<div class="slot ${open[d].includes(p) ? "open" : ""}"></div>`);
+  });
+}
+function staffLogin() {
+  if (staffPassword.value.trim() !== STAFF_PASSWORD) { staffLoginMessage.textContent = "Incorrect password."; return; }
+  staffAuthed = true;
+  staffLoginPanel.classList.add("hidden");
+  staffPanel.classList.remove("hidden");
+  renderStaff();
+}
+function setStaffTab(tab) {
+  staffTab = tab;
+  STAFF_TABS.forEach(t => {
+    document.getElementById("tab" + cap(t))?.classList.toggle("active", t === tab);
+  });
+  document.getElementById("staffPending").classList.toggle("hidden", tab !== "pending");
+  document.getElementById("staffApproved").classList.toggle("hidden", tab !== "approved");
+  document.getElementById("staffClaims").classList.toggle("hidden", tab !== "claims");
+  document.getElementById("staffReturnedPanel").classList.toggle("hidden", tab !== "returned");
+}
+function renderStaff() {
+  staffItemCount.textContent = items.length;
+  staffPendingCount.textContent = items.filter(i => i.status === "Pending Approval").length;
+  staffClaimCount.textContent = claims.length;
+  staffReturned.textContent = items.filter(i => i.status === "Returned").length;
+  renderStaffItems();
+  renderStaffClaims();
+  setStaffTab(staffTab);
+}
+function renderStaffItems() {
+  renderStaffBucket("staffPending", items.filter(i => i.status === "Pending Approval"), "pending");
+  renderStaffBucket("staffApproved", items.filter(i => !["Pending Approval","Rejected","Returned"].includes(i.status)), "approved");
+  renderStaffBucket("staffReturnedPanel", items.filter(i => ["Returned","Rejected"].includes(i.status)), "returned");
+}
+function renderStaffBucket(id, rows, type) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.innerHTML = "";
+  if (rows.length === 0) {
+    el.innerHTML = `<p class="message soft">No ${type} items right now.</p>`;
+    return;
+  }
+  rows.forEach(item => {
+    let buttons = "";
+    if (type === "pending") {
+      buttons = `<button class="btn-mini good" onclick="updateItem('${item.id}','Available')">Approve</button>
+                 <button class="btn-mini danger" onclick="updateItem('${item.id}','Rejected')">Reject</button>`;
+    } else if (type === "approved") {
+      buttons = `<button class="btn-mini light" onclick="updateItem('${item.id}','Available')">Available</button>
+                 <button class="btn-mini light" onclick="updateItem('${item.id}','Claimed')">Claimed</button>
+                 <button class="btn-mini" onclick="updateItem('${item.id}','Ready for Pickup')">Ready</button>
+                 <button class="btn-mini good" onclick="updateItem('${item.id}','Returned')">Returned</button>`;
+    } else {
+      buttons = `<button class="btn-mini light" onclick="updateItem('${item.id}','Available')">Restore</button>`;
+    }
+    el.innerHTML += `
+      <div class="staff-row">
+        <div class="row-top">
+          ${itemIcon(item, "row-icon")}
+          <div style="flex:1;min-width:230px">
+            <span class="status ${statusClass(item.status)}">${escapeHtml(item.status)}</span>
+            <h3>${escapeHtml(item.name)} <span class="data">(${escapeHtml(item.id)})</span></h3>
+            <p class="meta"><b>Location:</b> ${escapeHtml(item.location)} • <b>Reported by:</b> ${escapeHtml(item.reporter)} • <b>Date:</b> ${escapeHtml(item.dateFound)}</p>
+            <p class="meta"><b>Description:</b> ${escapeHtml(item.description)}</p>
+          </div>
+          <div class="card-actions">${buttons}</div>
+        </div>
+      </div>`;
+  });
+}
+function renderStaffClaims() {
+  const el = document.getElementById("staffClaims");
+  if (!el) return;
+  el.innerHTML = "";
+  if (claims.length === 0) { el.innerHTML = `<p class="message soft">No claim requests yet.</p>`; return; }
+  claims.forEach(c => {
+    const item = items.find(i => i.id === c.itemRef);
+    el.innerHTML += `
+      <div class="staff-row">
+        <div class="row-top">
+          ${item ? itemIcon(item, "row-icon") : ""}
+          <div style="flex:1;min-width:230px">
+            <span class="status ${statusClass(c.status)}">${escapeHtml(c.status)}</span>
+            <h3>${escapeHtml(c.studentName)} is claiming ${escapeHtml(item ? item.name : c.itemRef)}</h3>
+            <p class="meta"><b>Student ID:</b> <span class="data">${escapeHtml(c.studentId)}</span> • <b>Email:</b> ${escapeHtml(c.email)}</p>
+            <p class="meta"><b>Item Ref:</b> <span class="data">${escapeHtml(c.itemRef)}</span> • <b>Lost near:</b> ${escapeHtml(c.locationGuess)}</p>
+            <p class="meta"><b>Evidence:</b> ${escapeHtml(c.evidence)}</p>
+          </div>
+          <div class="card-actions">
+            <button class="btn-mini good" onclick="updateClaim('${c.id}','Approved')">Approve</button>
+            <button class="btn-mini light" onclick="updateClaim('${c.id}','Ready for Pickup')">Ready</button>
+            <button class="btn-mini danger" onclick="updateClaim('${c.id}','Denied')">Deny</button>
+          </div>
+        </div>
+      </div>`;
+  });
+}
+function updateClaim(id, status) {
+  const c = claims.find(x => x.id === id);
+  if (!c) return;
+  c.status = status;
+  const item = items.find(i => i.id === c.itemRef);
+  if (item && status === "Ready for Pickup") item.status = "Ready for Pickup";
+  if (item && status === "Approved" && item.status === "Available") item.status = "Claimed";
+  saveData();
+  renderAll();
+}
+function updateItem(id, status) {
+  const item = items.find(x => x.id === id);
+  if (!item) return;
+  item.status = status;
+  saveData();
+  renderAll();
+}
+function itemIcon(item, extraClass="") {
+  const cls = slug(item.category);
+  return `<div class="icon-tile ${cls} ${extraClass}" aria-hidden="true">${iconSvg(item.category, item.name)}</div>`;
+}
+function iconSvg(category, name="") {
+  const c = String(category || "").toLowerCase();
+  const n = String(name || "").toLowerCase();
+  if (c.includes("electronics")) return `<svg viewBox="0 0 48 48"><path d="M15 16a9 9 0 0 1 18 0v8"/><path d="M15 24h-2a4 4 0 0 0-4 4v5a4 4 0 0 0 4 4h2z"/><path d="M33 24h2a4 4 0 0 1 4 4v5a4 4 0 0 1-4 4h-2z"/><path d="M19 39h10"/></svg>`;
+  if (c.includes("water")) return `<svg viewBox="0 0 48 48"><path d="M24 5c7 9 11 15 11 23a11 11 0 0 1-22 0C13 20 17 14 24 5z"/><path d="M20 32c2 2 6 2 8 0"/></svg>`;
+  if (c.includes("school")) return `<svg viewBox="0 0 48 48"><path d="M13 8h20l5 5v27H13z"/><path d="M33 8v7h7"/><path d="M18 24h16"/><path d="M18 31h13"/></svg>`;
+  if (c.includes("sports")) return `<svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="15"/><path d="M9 24h30"/><path d="M24 9c5 5 5 25 0 30"/><path d="M24 9c-5 5-5 25 0 30"/></svg>`;
+  if (c.includes("book")) return `<svg viewBox="0 0 48 48"><path d="M11 10h14a6 6 0 0 1 6 6v24H17a6 6 0 0 0-6 6z"/><path d="M31 16a6 6 0 0 1 6-6h0v30h-6"/><path d="M17 18h8"/><path d="M17 25h8"/></svg>`;
+  if (c.includes("keys")) return `<svg viewBox="0 0 48 48"><circle cx="17" cy="24" r="7"/><path d="M24 24h17"/><path d="M33 24v6"/><path d="M39 24v5"/></svg>`;
+  if (c.includes("lunch")) return `<svg viewBox="0 0 48 48"><path d="M13 17h22v22H13z"/><path d="M18 17v-4h12v4"/><path d="M13 25h22"/><path d="M18 31h12"/></svg>`;
+  if (c.includes("faith")) return `<svg viewBox="0 0 48 48"><path d="M24 8v32"/><path d="M15 17h18"/><circle cx="24" cy="39" r="3"/></svg>`;
+  if (c.includes("clothing")) return `<svg viewBox="0 0 48 48"><path d="M18 9l6 5 6-5 9 7-5 8-4-3v20H18V21l-4 3-5-8z"/><path d="M24 14v27"/></svg>`;
+  if (n.includes("wallet")) return `<svg viewBox="0 0 48 48"><path d="M9 15h30v24H9z"/><path d="M9 21h32v10H29a4 4 0 0 1 0-8h12"/><circle cx="30" cy="26" r="1"/></svg>`;
+  return `<svg viewBox="0 0 48 48"><path d="M14 14h20v24H14z"/><path d="M18 10h12v4"/><path d="M19 22h10"/><path d="M19 29h7"/></svg>`;
+}
+function statusClass(s) {
+  s = String(s || "").toLowerCase();
+  if (s.includes("pending") || s.includes("review") || s.includes("claimed")) return "pending";
+  if (s.includes("ready")) return "ready";
+  if (s.includes("returned")) return "returned";
+  if (s.includes("denied") || s.includes("rejected")) return "denied";
+  if (s.includes("approved") || s.includes("available")) return "available";
+  return "available";
+}
+function cap(s) {
+  if (s === "returned") return "Returned";
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+function slug(s) {
+  return String(s || "other").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"");
+}
+function escapeHtml(str) {
+  return String(str ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+</script>
+</body>
+</html>
